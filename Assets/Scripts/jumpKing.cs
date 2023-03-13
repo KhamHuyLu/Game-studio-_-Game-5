@@ -4,6 +4,13 @@ using UnityEngine;
 
 public class jumpKing : MonoBehaviour
 {
+    //jump power indicator
+    [SerializeField] private JumpBar jumpBar;
+
+    //audio
+    [SerializeField] private AudioSource soundManager;
+    [SerializeField] private AudioClip jumpAUD;
+
     public float walkSpeed;
     private float moveInput;
     public bool isGrounded;
@@ -44,6 +51,11 @@ public class jumpKing : MonoBehaviour
         if(Input.GetKey("space") && isGrounded && canJump)
         {
             jumpValue += 0.1f;
+            jumpBar.SetJump(jumpValue);
+        }
+        else
+        {
+            jumpBar.SetJump(0);
         }
 
         if (Input.GetKeyDown("space") && isGrounded && canJump)
@@ -57,6 +69,7 @@ public class jumpKing : MonoBehaviour
             float tempy = jumpValue;
             rb.velocity = new Vector2(tempx, tempy);
             Invoke("ResetJump", 0.2f);
+            soundManager.PlayOneShot(jumpAUD);
         }
 
         if (Input.GetKeyUp("space"))
@@ -65,6 +78,7 @@ public class jumpKing : MonoBehaviour
             {
                 rb.velocity = new Vector2(moveInput * walkSpeed, jumpValue);
                 jumpValue = 0.0f;
+                soundManager.PlayOneShot(jumpAUD);
             }
             canJump = true;
         }
