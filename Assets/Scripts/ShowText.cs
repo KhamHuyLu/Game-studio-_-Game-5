@@ -4,28 +4,19 @@ using UnityEngine;
 
 public class ShowText : MonoBehaviour
 {
-    // Start is called before the first frame update
+    [SerializeField] private GameObject textObject;
 
-    public GameObject uiOject;
-
-    void Start()
+    private void Start()
     {
-        uiOject.SetActive(false);
+        textObject.SetActive(true);
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        textObject.SetActive(true);
     }
 
-    private void OnTriggerEnter2D(Collider2D player)
+    private void OnTriggerExit2D(Collider2D collision)
     {
-        if(player.gameObject.tag=="Player")
-        {
-            uiOject.SetActive(true);
-            StartCoroutine("WaitForSec");
-        }
-    }
-
-    IEnumerator WaitForSec()
-    {
-        yield return new WaitForSeconds(1);
-        Destroy(uiOject);
-        Destroy(gameObject);
+        textObject.SetActive(false);
     }
 }
